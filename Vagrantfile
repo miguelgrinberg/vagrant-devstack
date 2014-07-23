@@ -81,7 +81,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     :netmask => "255.255.255.0", :auto_config => false
 
   config.vm.provider :virtualbox do |vb|
-    # Change memory of our VM to 2048MB
+    # set explicit VM name
+    vb.name = "devstack"
+    # change memory of our VM to 2048MB
     vb.customize ["modifyvm", :id, "--memory", "4096"]
     # enable promiscuous mode on the public network
     vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
