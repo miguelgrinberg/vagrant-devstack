@@ -10,56 +10,13 @@ pip install git-review tox
 
 # download devstack
 git clone git://git.openstack.org/openstack-dev/devstack
-chown -R vagrant:vagrant devstack
 
-# create minimal localrc
-cat <<_LOCALRC > devstack/local.conf
-[[local|localrc]]
-
-# Passwords
-ADMIN_PASSWORD=password
-MYSQL_PASSWORD=password
-RABBIT_PASSWORD=password
-SERVICE_PASSWORD=password
-SERVICE_TOKEN=password
-SWIFT_HASH=password
-
-# Logging
-LOGFILE=/opt/stack/logs/stack.sh.log
-VERBOSE=True
-LOG_COLOR=True
-SCREEN_LOGDIR=/opt/stack/logs
-
-# Neutron
-disable_service n-net
-enable_service q-svc
-enable_service q-agt
-enable_service q-dhcp
-enable_service q-l3
-enable_service q-meta
-enable_service neutron
-#Q_PLUGIN=linuxbridge
-
-# Swift
-#enable_service s-proxy
-#enable_service s-object
-#enable_service s-container
-#enable_service s-account
-
-# Disable security groups
-Q_USE_SECGROUP=False
-LIBVIRT_FIREWALL_DRIVER=nova.virt.firewall.NoopFirewallDriver
-
-# Network settings
-HOST_IP=192.168.33.10
-FLOATING_RANGE=172.24.1.0/24
-PUBLIC_NETWORK_GATEWAY=172.24.1.1
-FIXED_RANGE=10.0.0.0/24
-NETWORK_GATEWAY=10.0.0.1
-_LOCALRC
+# copy local.conf
+cp /vagrant/local.conf devstack/
 
 # Installation
 ip link set dev eth2 up
+chown -R vagrant:vagrant devstack
 cd devstack
 sudo -u vagrant env HOME=/home/vagrant ./stack.sh
 ovs-vsctl add-port br-ex eth2
@@ -81,9 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     :netmask => "255.255.255.0", :auto_config => false
 
   config.vm.provider :virtualbox do |vb|
-    # set explicit VM name
-    vb.name = "devstack"
-    # change memory of our VM to 2048MB
+    # more RAM
     vb.customize ["modifyvm", :id, "--memory", "4096"]
     # enable promiscuous mode on the public network
     vb.customize ["modifyvm", :id, "--nicpromisc3", "allow-all"]
