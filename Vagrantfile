@@ -9,7 +9,7 @@ apt-get -y build-dep python-mysqldb
 pip install git-review tox
 
 # download devstack
-git clone git://git.openstack.org/openstack-dev/devstack
+git clone -b stable/juno git://git.openstack.org/openstack-dev/devstack
 
 # copy local.conf
 cp /vagrant/local.conf devstack/
