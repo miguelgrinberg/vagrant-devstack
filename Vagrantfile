@@ -20,6 +20,9 @@ chown -R vagrant:vagrant devstack
 cd devstack
 sudo -u vagrant env HOME=/home/vagrant ./stack.sh
 ovs-vsctl add-port br-ex eth2
+echo "Set your git credentials in the VM:"
+echo "git config --global user.name "Miguel Grinberg"
+echo "git config --global user.email "miguel.grinberg@gmail.com"
 SCRIPT
 
 ## Vagrant config
